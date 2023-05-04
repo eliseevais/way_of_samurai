@@ -10,6 +10,7 @@ import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import MusicContainer from './components/Music/MusicContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
+import LoginPage from './components/Login/Login';
 
 const App = (props) => {
 
@@ -28,6 +29,8 @@ const App = (props) => {
           <Route path='/settings' element={<Settings />} />
 
           <Route path='/friends' element={<Friends />} />
+
+          <Route path='/login' element={<LoginPage />} />
 
         </Routes>
       </div>
