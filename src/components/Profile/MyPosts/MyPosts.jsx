@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useState } from "react";
 import s from './MyPosts.module.css';
 import Post from "./Post/Post";
 import { Field, reduxForm } from "redux-form";
@@ -21,7 +21,9 @@ let AddNewPostForm = (props) => {
 
 let AddNewPostFormRedux = reduxForm({ form: "ProfileAddNewPostForm" })(AddNewPostForm)
 
-const MyPosts = (props) => {
+const MyPosts = React.memo(props => {
+
+  console.log('RENDER from myPost');
 
   let postsElement =
     props.posts.map(p => <Post message={p.message}
@@ -34,7 +36,7 @@ const MyPosts = (props) => {
   }
 
   return (
-    <div className={s.postsBlock}>
+    <div className={s.postsBlock} >
       <h3>My posts</h3>
       <AddNewPostFormRedux onSubmit={onAddPost} />
       <div className={s.posts}>
@@ -42,6 +44,7 @@ const MyPosts = (props) => {
       </div>
     </div>
   )
-}
+})
+
 
 export default MyPosts;
