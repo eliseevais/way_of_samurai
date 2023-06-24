@@ -6,7 +6,6 @@ import profileReducer from "./profileReducer";
 import sidebarReducer from "./sidebarReducer";
 import usersReducer from "./usersReducer";
 import thunkMiddleware from "redux-thunk";
-//import { reduxForm } from "redux-form";
 import { reducer as formReducer } from "redux-form";
 import appReducer from "./appReducer";
 
