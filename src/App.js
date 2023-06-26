@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import HeaderContainer from './components/Header/HeaderContainer';
 import News from './components/News/News';
@@ -11,11 +11,12 @@ import UsersContainer from './components/Users/UsersContainer';
 import MusicContainer from './components/Music/MusicContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import LoginPage from './components/Login/Login';
-import { connect } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { initializeApp } from "./redux/appReducer";
 import { compose } from 'redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Preloader from './components/Common/Preloader/Preloader';
+import store from './redux/reduxStore';
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -68,8 +69,22 @@ const mapStateToProps = (state) => ({
   initialized: state.app.initialized
 })
 
-export default compose(
+let AppContainer = compose(
   withRouter,
   connect(mapStateToProps, { initializeApp })
 )(App);
+
+const AppSamuraiJS = (props) => {
+  return (
+    <BrowserRouter>
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  </BrowserRouter>
+  )
+}
+
+export default AppSamuraiJS;
+
+
 
