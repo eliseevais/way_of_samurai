@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy, useEffect } from 'react';
 import './App.css';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
@@ -6,10 +6,8 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Friends from './components/Friends/Friends';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import MusicContainer from './components/Music/MusicContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
 import LoginPage from './components/Login/Login';
 import { Provider, connect } from 'react-redux';
 import { initializeApp } from "./redux/appReducer";
@@ -17,6 +15,10 @@ import { compose } from 'redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Preloader from './components/Common/Preloader/Preloader';
 import store from './redux/reduxStore';
+//import ProfileContainer from './components/Profile/ProfileContainer';
+const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'))
+//import DialogsContainer from './components/Dialogs/DialogsContainer';
+const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'))
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -45,20 +47,23 @@ class App extends Component {
         <HeaderContainer />
         <Navbar />
         <div className='app-wrapper-content'>
-          <Routes>
-            <Route path='/profile/:userId?' element={<ProfileContainer />} />
-            <Route path='/dialogs/*' element={<DialogsContainer />} />
-            <Route path='/users' element={<UsersContainer />} />
+          <Suspense fallback={<Preloader />}>
+            <Routes>
+              <Route path='/profile/:userId?' element={<ProfileContainer />} />
+              <Route path='/dialogs/*' element={<DialogsContainer />} />
+              <Route path='/users' element={<UsersContainer />} />
 
-            <Route path='/music' element={<MusicContainer />} />
-            <Route path='/news' element={<News />} />
-            <Route path='/settings' element={<Settings />} />
+              <Route path='/music' element={<MusicContainer />} />
+              <Route path='/news' element={<News />} />
+              <Route path='/settings' element={<Settings />} />
 
-            <Route path='/friends' element={<Friends />} />
+              <Route path='/friends' element={<Friends />} />
 
-            <Route path='/login' element={<LoginPage />} />
+              <Route path='/login' element={<LoginPage />} />
 
-          </Routes>
+            </Routes>
+          </Suspense>
+
         </div>
       </div>
     );
@@ -77,10 +82,10 @@ let AppContainer = compose(
 const AppSamuraiJS = (props) => {
   return (
     <BrowserRouter>
-    <Provider store={store}>
-      <AppContainer />
-    </Provider>
-  </BrowserRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </BrowserRouter>
   )
 }
 
