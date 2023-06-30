@@ -1,6 +1,6 @@
 import React, { Component, Suspense, lazy, useEffect } from 'react';
 import './App.css';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import HeaderContainer from './components/Header/HeaderContainer';
 import News from './components/News/News';
@@ -81,11 +81,12 @@ let AppContainer = compose(
 
 const AppSamuraiJS = (props) => {
   return (
-    <BrowserRouter>
+    <HashRouter>
+      {/* <BrouserRouter basename={process.env.PUBLIC_URL}> */}
       <Provider store={store}>
         <AppContainer />
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
