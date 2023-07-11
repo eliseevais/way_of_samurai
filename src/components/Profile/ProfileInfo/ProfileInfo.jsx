@@ -19,6 +19,10 @@ const ProfileInfo = (props) => {
     }
   }
 
+  const onSubmit = (formData) => {
+    props.saveProfile(formData)
+  }
+
   return (
     <div>
       <div className={style.descriptionBlock}>
@@ -27,7 +31,7 @@ const ProfileInfo = (props) => {
 
         <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} />
         {editMode
-          ? <ProfileDataForm profile={props.profile} />
+          ? <ProfileDataForm profile={props.profile} onSubmit={onSubmit} />
           : <ProfileData goToEditMode={() => { setEditMode(true) }}
             profile={props.profile} isOwner={props.isOwner} />
         }
@@ -37,30 +41,32 @@ const ProfileInfo = (props) => {
 }
 
 const ProfileData = ({ profile, isOwner, goToEditMode }) => {
-  return <div>
-    {isOwner && <div><button onClick={goToEditMode}>edit</button></div>}
+  return (
     <div>
-      <b>About me</b>: {profile.aboutme}
-    </div>
-    <div>
-      <b>Full name</b>: {profile.fullName}
-    </div>
-    <div>
-      <b>Looking for a job</b>: {profile.lookingForAJob ? "yes" : "no"}
-    </div>
-    {profile.lookingForAJob &&
+      {isOwner && <div><button onClick={goToEditMode}>edit</button></div>}
       <div>
-        <b>My professional skills</b>: {profile.lookingForAJobDescription}
+        <b>Full name</b>: {profile.fullName}
       </div>
-    }
-
-    <div>
-      <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {
-        return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
-      })
+      <div>
+        <b>About me</b>: {profile.aboutme}
+      </div>
+      <div>
+        <b>Looking for a job</b>: {profile.lookingForAJob ? "yes" : "no"}
+      </div>
+      {profile.lookingForAJob &&
+        <div>
+          <b>My professional skills</b>: {profile.lookingForAJobDescription}
+        </div>
       }
+
+      <div>
+        <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {
+          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
+        })
+        }
+      </div>
     </div>
-  </div>
+  )
 }
 
 const Contact = ({ contactTitle, contactValue }) => {
