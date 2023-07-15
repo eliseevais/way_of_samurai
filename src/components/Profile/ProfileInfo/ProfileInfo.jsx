@@ -20,18 +20,26 @@ const ProfileInfo = (props) => {
   }
 
   const onSubmit = (formData) => {
-    props.saveProfile(formData)
+    props.saveProfile(formData).then(
+      () => {
+        setEditMode(false)
+      }
+    );
   }
 
   return (
     <div>
       <div className={style.descriptionBlock}>
-        <img src={props.profile.photos.large || userPhoto} className={style.mainPhoto} />
-        {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
+        <img src={props.profile.photos.large || userPhoto}
+          className={style.mainPhoto} />
+        {props.isOwner && <input type={"file"}
+          onChange={onMainPhotoSelected} />}
 
-        <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} />
+        <ProfileStatusWithHooks status={props.status}
+          updateStatus={props.updateStatus} />
         {editMode
-          ? <ProfileDataForm profile={props.profile} onSubmit={onSubmit} />
+          ? <ProfileDataForm initialValues={props.profile}
+            profile={props.profile} onSubmit={onSubmit} />
           : <ProfileData goToEditMode={() => { setEditMode(true) }}
             profile={props.profile} isOwner={props.isOwner} />
         }
@@ -48,7 +56,7 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => {
         <b>Full name</b>: {profile.fullName}
       </div>
       <div>
-        <b>About me</b>: {profile.aboutme}
+        <b>About me</b>: {profile.aboutMe}
       </div>
       <div>
         <b>Looking for a job</b>: {profile.lookingForAJob ? "yes" : "no"}
@@ -61,7 +69,8 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => {
 
       <div>
         <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {
-          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
+          return <Contact key={key} contactTitle={key}
+            contactValue={profile.contacts[key]} />
         })
         }
       </div>
