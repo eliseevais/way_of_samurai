@@ -1,6 +1,6 @@
 import React, { Component, Suspense, lazy, useEffect } from 'react';
 import './App.css';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import { Routes, Route, HashRouter, BrowserRouter, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import HeaderContainer from './components/Header/HeaderContainer';
 import News from './components/News/News';
@@ -15,10 +15,13 @@ import { compose } from 'redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Preloader from './components/Common/Preloader/Preloader';
 import store from './redux/reduxStore';
+import NotFound from './components/404/404';
 //import ProfileContainer from './components/Profile/ProfileContainer';
-const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'))
+const ProfileContainer = lazy(
+  () => import('./components/Profile/ProfileContainer'))
 //import DialogsContainer from './components/Dialogs/DialogsContainer';
-const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'))
+const DialogsContainer = lazy(
+  () => import('./components/Dialogs/DialogsContainer'))
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -33,6 +36,7 @@ function withRouter(Component) {
 }
 
 class App extends Component {
+
   componentDidMount() {
     this.props.initializeApp();
   }
@@ -49,7 +53,7 @@ class App extends Component {
         <div className='app-wrapper-content'>
           <Suspense fallback={<Preloader />}>
             <Routes>
-              <Route path='/profile/:userId?' element={<ProfileContainer />} />
+              <Route path="/" element={<Navigate to="/profile" />} />              <Route path='/profile/:userId?' element={<ProfileContainer />} />
               <Route path='/dialogs/*' element={<DialogsContainer />} />
               <Route path='/users' element={<UsersContainer />} />
 
@@ -60,6 +64,8 @@ class App extends Component {
               <Route path='/friends' element={<Friends />} />
 
               <Route path='/login' element={<LoginPage />} />
+
+              <Route path='*' element={<NotFound />} />
 
             </Routes>
           </Suspense>
@@ -91,6 +97,3 @@ const AppSamuraiJS = (props) => {
 }
 
 export default AppSamuraiJS;
-
-
-
